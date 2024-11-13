@@ -12,20 +12,20 @@ return [
             'driver' => 'session',
             'provider' => 'admins',
         ],
-        'admin' => [
+        'user' => [ // Menambahkan guard 'user'
             'driver' => 'session',
-            'provider' => 'admins',
+            'provider' => 'users',
         ],
     ],
 
     'providers' => [
+        'admins' => [ // Menambahkan provider 'admins'
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
-        ],
-        'admins' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\Admin::class),
         ],
     ],
 
@@ -37,6 +37,13 @@ return [
             'throttle' => 60,
         ],
     ],
+
+    'api' => [
+    'driver' => 'sanctum',
+    'provider' => 'users',
+    'hash' => false,
+    ],
+
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 ];

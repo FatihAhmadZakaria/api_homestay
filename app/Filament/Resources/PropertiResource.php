@@ -30,13 +30,28 @@ class PropertiResource extends Resource
             ->bulkActions([Tables\Actions\DeleteBulkAction::make()]);
     }
 
-    // public static function form(Form $form): Form
-    // {
-    //     return $form
-    //         ->schema([
-    //             // form schema untuk properti
-    //         ]);
-    // }
+    public static function form(Form $form): Form
+{
+    return $form
+        ->schema([
+            Forms\Components\TextInput::make('nama_properti')
+                ->required(),
+            Forms\Components\TextInput::make('kapasitas')
+                ->numeric()
+                ->required(),
+            Forms\Components\Textarea::make('fitur')
+                ->required(),
+            Forms\Components\TextInput::make('harga')
+                ->numeric()
+                ->required(),
+            Forms\Components\Textarea::make('deskripsi')
+                ->required(),
+            Forms\Components\TextInput::make('jumlah')
+                ->numeric()
+                ->required(),
+        ]);
+}
+
 
     public static function getPages(): array
     {

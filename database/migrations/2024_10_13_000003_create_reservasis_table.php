@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -20,6 +21,8 @@ return new class extends Migration
             $table->dateTime('tgl_transaksi');
             $table->string('tipe_produk');
         });
+
+        DB::statement('ALTER TABLE reservasi AUTO_INCREMENT = 12350;');
     }
 
     public function down(): void

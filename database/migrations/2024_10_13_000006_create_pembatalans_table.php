@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 
 return new class extends Migration
@@ -18,6 +19,8 @@ return new class extends Migration
             $table->integer('jumlah_refund');
             $table->string('status_refund');
         });
+
+        DB::statement('ALTER TABLE pembatalan AUTO_INCREMENT = 13470;');
     }
 
     public function down(): void

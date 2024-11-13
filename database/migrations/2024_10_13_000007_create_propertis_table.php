@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -15,8 +16,10 @@ return new class extends Migration
             $table->text('deskripsi');
             $table->integer('harga');
             $table->integer('jumlah');
-            $table->string('fltur');
+            $table->string('fitur');
         });
+
+        DB::statement('ALTER TABLE properti AUTO_INCREMENT = 71350;');
     }
 
     public function down(): void

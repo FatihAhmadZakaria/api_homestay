@@ -16,7 +16,7 @@ class Login extends BaseAuth
     public function mount(): void
     {
         // Mengisi username dan password dengan nilai default
-        $this->data['login'] = 'Admin'; // Ganti dengan username default jika perlu
+        $this->data['login'] = 'admin1@email.com'; // Ganti dengan username default jika perlu
         $this->data['password'] = '123'; // Ganti dengan password default jika perlu
     }
 
@@ -34,7 +34,7 @@ class Login extends BaseAuth
     protected function getLoginFormComponent(): Component
     {
         return TextInput::make('login') // Ini untuk username
-            ->label('Username') // Ganti label menjadi Username
+            ->label('Email') // Ganti label menjadi Username
             ->required()
             ->autocomplete()
             ->autofocus()
@@ -45,7 +45,7 @@ class Login extends BaseAuth
     {
         // Hanya menggunakan username
         return [
-            'name' => $data['login'], // Mengambil username dari input
+            'email' => $data['login'], // Mengambil username dari input
             'password' => $data['password'],
         ];
     }

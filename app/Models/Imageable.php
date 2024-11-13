@@ -8,14 +8,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Imageable extends Model
 {
-    protected $table = 'imageable';
+    use HasFactory;
 
+    // Menentukan nama tabel jika berbeda dari konvensi Laravel
+    protected $table = 'imageable';
+    protected $primaryKey = 'id_img';
+    public $timestamps = false;
+
+    // Kolom yang bisa diisi secara massal
     protected $fillable = [
-        'img_path',
         'imageable_id',
-        'imageable_type'
+        'imageable_type',
+        'img_path',
     ];
 
+    /**
+     * Definisi relasi morphTo untuk mendukung relasi polymorphic
+     */
     public function imageable()
     {
         return $this->morphTo();

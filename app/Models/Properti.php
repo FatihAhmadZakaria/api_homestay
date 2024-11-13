@@ -4,17 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Imageable;
 
 class Properti extends Model
 {
     protected $table = 'properti';
+    protected $primaryKey = 'id_properti';
+    public $timestamps = false;
 
     protected $fillable = [
         'nama_properti',
         'kapasitas',
         'fitur',
         'harga',
-        'deskripsi'
+        'deskripsi',
+        'jumlah'
     ];
 
     public function imageable()

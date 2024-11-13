@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Objek extends Model
 {
     protected $table = 'objek';
+    protected $primaryKey = 'id_objek';
 
     protected $fillable = [
         'nama_objek',
