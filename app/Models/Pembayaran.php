@@ -8,19 +8,25 @@ use Illuminate\Database\Eloquent\Model;
 class Pembayaran extends Model
 {
     use HasFactory;
+
     protected $table = 'pembayaran';
     public $timestamps = false;
     protected $primaryKey = 'id_pembayaran';
 
     protected $fillable = [
         'id_reservasi',
-        'id_admin',
+        'id_admin', // Nullable jika tidak selalu digunakan
         'tgl_pembayaran',
         'jumlah_dp',
         'jumlah_pelunasan',
         'payment_type',
         'snap_token',
-        'status_pembayaran'
+        'status_pembayaran',
+    ];
+
+    const PAYMENT_TYPES = [
+        'snap' => 'Snap Payment',
+        'bank_transfer' => 'Bank Transfer',
     ];
 
     public function reservasi()

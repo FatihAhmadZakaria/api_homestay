@@ -10,6 +10,7 @@ class Objek extends Model
 {
     protected $table = 'objek';
     protected $primaryKey = 'id_objek';
+    public $timestamps = false;
 
     protected $fillable = [
         'nama_objek',

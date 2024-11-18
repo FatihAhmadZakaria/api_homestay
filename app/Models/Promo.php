@@ -9,6 +9,7 @@ class Promo extends Model
 {
     protected $table = 'promo';
     protected $primaryKey = 'id_promo';
+    public $timestamps = false;
 
     protected $fillable = [
         'nama_promo',

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Reservasi extends Model
 {
     use HasFactory;
+
     public $timestamps = false;
     protected $table = 'reservasi';
     protected $primaryKey = 'id_reservasi';
@@ -19,9 +20,14 @@ class Reservasi extends Model
         'tgl_mulai',
         'tgl_selesai',
         'total_harga',
-        'tipe_produk',
+        'tipe_produk', // properti/kendaraan
         'jumlah_pesan',
         'id_produk'
+    ];
+
+    const TIPE_PRODUK = [
+        'properti' => 'Properti',
+        'kendaraan' => 'Kendaraan',
     ];
 
     public function user()

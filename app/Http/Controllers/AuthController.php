@@ -30,7 +30,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'nama_depan' => $request->nama_depan,
             'nama_belakang' => $request->nama_belakang,
-            'password' => bcrypt($request->password),
+            'password' => Hash::make($request->password),
             'phone' => $request->phone,
         ]);
 
@@ -49,28 +49,23 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        // Validasi input
-        $validated = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:6',
-        ]);
+        $user = User::where('email', $request->email)->first();
 
-        // Cek apakah pengguna terdaftar
-        if (Auth::attempt($validated)) {
-            $user = Auth::user();  // Mendapatkan pengguna yang sedang login
-            $token = $user->createToken('YourAppName')->accessToken;  // Membuat token untuk pengguna
-
-            // Mengirimkan response dengan access_token dan id_user
-            return response()->json([
-                'access_token' => $token,
-                'id_user' => $user->id,  // Menyertakan id_user untuk keperluan pemesanan
-                'nama_depan' => $user->nama_depan,
-                'email' => $user->email,
-            ]);
+        if (! $user || ! Hash::check($request->password, $user->password)) {
+            return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        return response()->json(['message' => 'Unauthorized'], 401); // Jika login gagal
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+            'id_user' => $user->id,
+            'nama' => $user->nama_depan . ' ' . $user->nama_belakang,
+            'email' => $user->email,
+        ]);
     }
+
 
 
     /**

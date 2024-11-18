@@ -15,14 +15,17 @@ class PropertiController extends Controller
         // Menyusun data yang akan ditampilkan
         $data = $properties->map(function ($properti) {
             return [
+                'id' => $properti->id_properti,
+                'img' => $properti->imageable->map(function ($image) {
+                        return [
+                            'img_path' => $image->img_path,
+                        ];
+                    }),
                 'nama' => $properti->nama_properti,
-                'deskripsi' => $properti->deskripsi,
+                'deskrip' => $properti->deskripsi,
                 'fitur' => $properti->fitur,
                 'kapasitas' => $properti->kapasitas,
                 'harga' => $properti->harga,
-                'images' => $properti->imageable->map(function ($image) {
-                    return basename($image->img_path); // Mengambil hanya nama file
-                })->all(),
             ];
         });
 

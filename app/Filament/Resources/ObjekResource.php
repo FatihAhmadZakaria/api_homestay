@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ObjekResource\Pages;
-use App\Filament\Resources\ObjekResource\RelationManagers;
 use App\Models\Objek;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ObjekResource extends Resource
 {
@@ -22,20 +19,39 @@ class ObjekResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama_objek'),
-                Tables\Columns\TextColumn::make('dekripsi'),
+                Tables\Columns\TextColumn::make('nama_objek')->label('Nama Objek'),
+                Tables\Columns\TextColumn::make('deskripsi')->label('Deskripsi'),
+                Tables\Columns\TextColumn::make('link_maps')->label('Link Maps'),
             ])
-            ->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()])
-            ->bulkActions([Tables\Actions\DeleteBulkAction::make()]);
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make(),
+            ]);
     }
 
-    // public static function form(Form $form): Form
-    // {
-    //     return $form
-    //         ->schema([
-    //             // form schema untuk objek
-    //         ]);
-    // }
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\TextInput::make('nama_objek')
+                    ->label('Nama Objek')
+                    ->required(),
+
+                Forms\Components\Textarea::make('deskripsi')
+                    ->label('Deskripsi')
+                    ->required()
+                    ->maxLength(1000),
+
+                Forms\Components\TextInput::make('link_maps')
+                    ->label('Link Maps')
+                    ->url()
+                    ->nullable(),
+            ]);
+    }
+
     public static function getPages(): array
     {
         return [

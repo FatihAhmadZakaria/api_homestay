@@ -7,6 +7,29 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ImageableController;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\PropertiController;
+use App\Http\Controllers\PromoController;
+use App\Http\Controllers\ObjekController;
+use App\Http\Controllers\KendaraanController;
+use App\Http\Controllers\ReservasiController;
+use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\KetersediaanController;
+use App\Http\Controllers\RiwayatController;
+
+Route::get('/riwayat/{id_user}', [RiwayatController::class, 'index']);
+
+Route::post('/cek-properti/{idProperti}', [KetersediaanController::class, 'cekKetersediaan']);
+Route::post('/cek-kendaraan/{idKendaraan}', [KetersediaanController::class, 'cekKetersediaanKendaraan']);
+
+Route::post('/reservasi/{id}/bayar', [PembayaranController::class, 'createPayment']);
+Route::post('/midtrans/callback', [PembayaranController::class, 'notificationHandler']);
+
+Route::post('/reservasi', [ReservasiController::class, 'storeReservasi']);
+
+Route::get('/kendaraan', [KendaraanController::class, 'index']);
+
+Route::get('/objek', [ObjekController::class, 'getObjekList']);
+
+Route::get('/promo', [PromoController::class, 'index']);
 
 Route::get('/properti', [PropertiController::class, 'index']);
 
