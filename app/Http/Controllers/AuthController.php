@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -75,24 +76,90 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function logout(Request $request)
-{
-    if ($user = $request->user()) {
-        // Hapus semua token pengguna
-        $user->tokens()->delete();
+    {
+        if ($user = $request->user()) {
+            // Hapus semua token pengguna
+            $user->tokens()->delete();
 
-        // Hapus remember_token
-        $user->remember_token = null;
+            // Hapus remember_token
+            $user->remember_token = null;
+            $user->save();
+
+            return response()->json([
+                'message' => 'User logged out successfully.',
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'No authenticated user found.',
+        ], 401);
+    }
+
+    // Fungsi untuk memperbarui kata sandi
+    public function updatePassword(Request $request)
+    {
+        Log::info('Entering updatePassword function');
+
+        $request->validate([
+            'sandi_lama' => 'required',
+            'sandi_baru' => 'required|min:4',
+        ]);
+
+        $user = Auth::user();
+
+        // Verifikasi kata sandi lama
+        if (!Hash::check($request->sandi_lama, $user->password)) {
+            return response()->json([
+                'message' => 'Kata sandi lama salah.',
+            ], 400);
+        }
+
+        // Update kata sandi
+        $user->password = Hash::make($request->sandi_baru);
         $user->save();
 
         return response()->json([
-            'message' => 'User logged out successfully.',
-        ]);
+            'success' => true,
+            'message' => 'Kata sandi berhasil diperbarui.',
+        ], 200);
     }
 
-    return response()->json([
-        'message' => 'No authenticated user found.',
-    ], 401);
-}
+    public function gantiNomor(Request $request)
+    {
+        Log::info('Entering updatePhone function');
+        Log::info('Before validation');
 
+        try {
+            $request->validate([
+                'no_lama' => 'required',
+                'no_baru' => 'required|unique:users,phone',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Validation failed:', $e->errors());
+            return response()->json(['errors' => $e->errors()], 422);
+        }
+
+        Log::info('After validation');
+
+        $user = Auth::user();
+        Log::info('User Auth:', ['user' => $user->toArray()]);
+        Log::info('Request received:', $request->all());
+
+        // Verifikasi nomor telepon lama
+        if ($user->phone !== $request->no_lama) {
+            return response()->json([
+                'message' => 'Nomor telepon lama tidak cocok.',
+            ], 400);
+        }
+
+        // Update nomor telepon
+        $user->phone = $request->no_baru;
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Nomor telepon berhasil diperbarui.',
+        ], 200); // Ubah status ke 200 (success) sesuai dengan praktik standar
+    }
 
 }

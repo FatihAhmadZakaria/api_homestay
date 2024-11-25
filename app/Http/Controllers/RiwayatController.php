@@ -26,6 +26,7 @@ class RiwayatController extends Controller
             })
             ->leftJoin('pembayaran as pb', 'r.id_reservasi', '=', 'pb.id_reservasi')
             ->select(
+                'r.id_reservasi', // Menambahkan ID reservasi
                 DB::raw("
                     CASE
                         WHEN r.tipe_produk = 'App\\\\Models\\\\Properti' THEN p.nama_properti
@@ -41,6 +42,7 @@ class RiwayatController extends Controller
                     END AS jenis
                 "),
                 DB::raw("COALESCE(pb.status_pembayaran, 'Belum Dibayar') AS status"),
+                DB::raw("COALESCE(pb.snap_token, '') AS snap_token"), // Menambahkan snap_token
                 'r.total_harga AS total',
                 'r.tgl_mulai',
                 'r.tgl_selesai',

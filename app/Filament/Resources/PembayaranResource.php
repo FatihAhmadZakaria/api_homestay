@@ -69,35 +69,46 @@ class PembayaranResource extends Resource
             ]);
     }
 
-    public static function form(Forms\Form $form): Forms\Form
+    public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                // DatePicker::make('tgl_pembayaran')
-                //     ->label('Tanggal Pembayaran')
-                //     ->required(),
-                // TextInput::make('jumlah_dp')
-                //     ->label('Jumlah DP')
-                //     ->numeric()
-                //     ->required(),
-                // TextInput::make('jumlah_pelunasan')
-                //     ->label('Jumlah Pelunasan')
-                //     ->numeric()
-                //     ->required(),
-                // Select::make('id_admin')
-                //     ->label('Nama Admin')
-                //     ->relationship('admin', 'nama') // Asumsi kolom `nama` ada di tabel `admin`
-                //     ->required(),
-                // TextInput::make('payment_type')
-                //     ->label('Jenis Pembayaran')
-                //     ->required(),
-                // TextInput::make('status_pembayaran')
-                //     ->label('Status Pembayaran')
-                //     ->required(),
-                // TextInput::make('snap_token')
-                //     ->label('Snap Token'),
+                Forms\Components\Select::make('id_reservasi')
+                    ->label('Reservasi')
+                    ->relationship('reservasi', 'id_reservasi')
+                    ->required(),
+                
+                Forms\Components\TextInput::make('id_admin')
+                    ->default(auth()->user()->id)
+                    ->hidden()
+                    ->label('ID Admin'),
+                
+                Forms\Components\DatePicker::make('tgl_pembayaran')
+                    ->label('Tanggal Pembayaran')
+                    ->required(),
+                
+                Forms\Components\Select::make('payment_type')
+                    ->label('Jenis Pembayaran')
+                    ->options(Pembayaran::PAYMENT_TYPES)
+                    ->required(),
+
+                Forms\Components\TextInput::make('jumlah_dp')
+                    ->label('Jumlah DP')
+                    ->numeric()
+                    ->required(),
+                
+                Forms\Components\TextInput::make('jumlah_pelunasan')
+                    ->label('Jumlah Pelunasan')
+                    ->numeric()
+                    ->required(),
+
+                Forms\Components\TextInput::make('status_pembayaran')
+                    ->label('Status Pembayaran')
+                    ->default('pending')
+                    ->required(),
             ]);
     }
+
 
     public static function canDelete(Model $record): bool
     {

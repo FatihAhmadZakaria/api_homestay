@@ -14,6 +14,15 @@ use App\Http\Controllers\ReservasiController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\KetersediaanController;
 use App\Http\Controllers\RiwayatController;
+use App\Http\Controllers\PembatalanController;
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/update-password', [AuthController::class, 'updatePassword']);
+    Route::post('/update-phone', [AuthController::class, 'gantiNomor']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
+
+Route::post('/pembatalan', [PembatalanController::class, 'createPembatalan']);
 
 Route::get('/riwayat/{id_user}', [RiwayatController::class, 'index']);
 
@@ -59,6 +68,6 @@ Route::get('/welcome', function () {
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
-Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+// Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
 

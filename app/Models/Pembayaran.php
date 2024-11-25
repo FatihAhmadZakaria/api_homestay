@@ -24,6 +24,11 @@ class Pembayaran extends Model
         'status_pembayaran',
     ];
 
+    protected $attributes = [
+        'id_admin' => 41230,
+        'snap_token' => '-'
+    ];
+
     const PAYMENT_TYPES = [
         'snap' => 'Snap Payment',
         'bank_transfer' => 'Bank Transfer',

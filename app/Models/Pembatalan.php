@@ -9,6 +9,7 @@ class Pembatalan extends Model
 {
     protected $table = 'pembatalan';
     protected $primaryKey = 'id_pembatalan';
+    public $timestamps = false;
 
     protected $fillable = [
         'id_reservasi',

@@ -105,27 +105,44 @@ class PembayaranController extends Controller
         }
 
         // Cari pembayaran berdasarkan order_id
-        $order = Pembayaran::where('id_reservasi', $orderId)->first();
-        if (!$order) {
+        $pembayaran = Pembayaran::where('id_reservasi', $orderId)->first();
+        if (!$pembayaran) {
             Log::warning('Order not found', ['order_id' => $orderId]);
             return response()->json(['success' => false, 'message' => 'Order tidak ditemukan'], 404);
         }
 
-        // Perbarui status pembayaran
-        if ($transactionStatus == 'settlement') {
-            $order->status_pembayaran = 'DP';
-        } elseif ($transactionStatus == 'expire') {
-            $order->status_pembayaran = 'expired';
-        } elseif ($transactionStatus == 'pending') {
-            $order->status_pembayaran = 'pending';
-        } else {
-            $order->status_pembayaran = 'other'; // Default untuk status yang tidak dikenal
+        // Dapatkan reservasi terkait
+        $reservasi = $pembayaran->reservasi;
+        if (!$reservasi) {
+            Log::warning('Reservasi not found for order', ['order_id' => $orderId]);
+            return response()->json(['success' => false, 'message' => 'Reservasi tidak ditemukan'], 404);
         }
 
-        $order->save();
-        Log::info('Order updated successfully', ['id_reservasi' => $order->id_reservasi, 'status' => $order->status_pembayaran]);
+        // Perbarui status pembayaran dan reservasi
+        if ($transactionStatus == 'settlement') {
+            $pembayaran->status_pembayaran = 'DP';
+            $reservasi->status_reservasi = 'tercatat'; // Status untuk reservasi berhasil
+        } elseif ($transactionStatus == 'expire') {
+            $pembayaran->status_pembayaran = 'expired';
+            $reservasi->status_reservasi = 'dibatalkan'; // Misalnya status untuk reservasi yang gagal
+        } elseif ($transactionStatus == 'pending') {
+            $pembayaran->status_pembayaran = 'pending';
+        } else {
+            $pembayaran->status_pembayaran = 'other'; // Default untuk status yang tidak dikenal
+        }
+
+        // Simpan perubahan
+        $pembayaran->save();
+        if ($transactionStatus == 'settlement' || $transactionStatus == 'expire') {
+            $reservasi->save();
+        }
+
+        Log::info('Order and reservation updated successfully', [
+            'id_reservasi' => $reservasi->id_reservasi,
+            'status_pembayaran' => $pembayaran->status_pembayaran,
+            'status_reservasi' => $reservasi->status_reservasi,
+        ]);
 
         return response()->json(['message' => 'Success']);
     }
-
 }
