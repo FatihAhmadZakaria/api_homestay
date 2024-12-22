@@ -27,7 +27,6 @@ class KendaraanResource extends Resource
             ->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()])
             ->bulkActions([Tables\Actions\DeleteBulkAction::make()]);
     }
-
     public static function form(Forms\Form $form): Forms\Form
     {
         return $form
@@ -62,7 +61,6 @@ class KendaraanResource extends Resource
                     ->maxLength(500),
             ]);
     }
-
     public static function getPages(): array
     {
         return [

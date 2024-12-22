@@ -77,16 +77,16 @@ class PembayaranResource extends Resource
                     ->label('Reservasi')
                     ->relationship('reservasi', 'id_reservasi')
                     ->required(),
-                
+
                 Forms\Components\TextInput::make('id_admin')
                     ->default(auth()->user()->id)
                     ->hidden()
                     ->label('ID Admin'),
-                
+
                 Forms\Components\DatePicker::make('tgl_pembayaran')
                     ->label('Tanggal Pembayaran')
                     ->required(),
-                
+
                 Forms\Components\Select::make('payment_type')
                     ->label('Jenis Pembayaran')
                     ->options(Pembayaran::PAYMENT_TYPES)
@@ -96,13 +96,18 @@ class PembayaranResource extends Resource
                     ->label('Jumlah DP')
                     ->numeric()
                     ->required(),
-                
+
                 Forms\Components\TextInput::make('jumlah_pelunasan')
                     ->label('Jumlah Pelunasan')
                     ->numeric()
                     ->required(),
 
                 Forms\Components\TextInput::make('status_pembayaran')
+                    ->options([
+                        'DP' => 'DP',
+                        'lunas' => 'Lunas',
+                        'dibatalkan' => 'Batalkan',
+                    ])
                     ->label('Status Pembayaran')
                     ->default('pending')
                     ->required(),

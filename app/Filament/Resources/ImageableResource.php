@@ -22,16 +22,16 @@ class ImageableResource extends Resource
     protected static ?string $slug = 'imageables';
 
     public static function table(Table $table): Table
-{
-    return $table
-        ->columns([
-            Tables\Columns\TextColumn::make('img_path')->label('Image Path'),
-            Tables\Columns\TextColumn::make('imageable_id')->label('Imageable ID'),
-            Tables\Columns\TextColumn::make('imageable_type')->label('Imageable Type'),
-        ])
-        ->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()])
-        ->bulkActions([Tables\Actions\DeleteBulkAction::make()]);
-}
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('img_path')->label('Image Path'),
+                Tables\Columns\TextColumn::make('imageable_id')->label('Imageable ID'),
+                Tables\Columns\TextColumn::make('imageable_type')->label('Imageable Type'),
+            ])
+            ->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()])
+            ->bulkActions([Tables\Actions\DeleteBulkAction::make()]);
+    }
 
 
     public static function form(Form $form): Form

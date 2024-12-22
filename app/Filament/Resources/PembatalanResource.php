@@ -33,15 +33,41 @@ class PembatalanResource extends Resource
     {
         return $form
             ->schema([
-                // Schema form
+                Forms\Components\Select::make('id_reservasi')
+                    ->label('Reservasi')
+                    ->relationship('reservasi', 'id_reservasi')
+                    ->required(),
+
+                Forms\Components\Select::make('id_admin')
+                    ->label('Admin')
+                    ->relationship('admin', 'name')
+                    ->required(),
+
+                Forms\Components\DatePicker::make('tgl_pembatalan')
+                    ->label('Tanggal Pembatalan')
+                    ->default(now())
+                    ->required(),
+
+                Forms\Components\Textarea::make('alasan_pembatalan')
+                    ->label('Alasan Pembatalan')
+                    ->required(),
+
+                Forms\Components\Select::make('status_refund')
+                    ->label('Status Refund')
+                    ->options([
+                        'pending' => 'Pending',
+                        'selesai' => 'Selesai',
+                        'tidak ada refund' => 'Tidak ada refund',
+                    ])
+                    ->required(),
+
+                Forms\Components\TextInput::make('jumlah_refund')
+                    ->label('Jumlah Refund')
+                    ->numeric()
+                    ->minValue(0)
+                    ->required(),
             ]);
     }
-
-    // public static function canDelete(Model $record): bool
-    // {
-    //     // Logika untuk pengecekan jika record dapat dihapus
-    //     return true;
-    // }
 
     public static function getPages(): array
     {

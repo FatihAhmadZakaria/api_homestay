@@ -15,54 +15,35 @@ class Login extends BaseAuth
 {
     public function mount(): void
     {
-        // Mengisi username dan password dengan nilai default
-        $this->data['login'] = 'admin1@email.com'; // Ganti dengan username default jika perlu
-        $this->data['password'] = '123'; // Ganti dengan password default jika perlu
+        $this->data['login'] = 'admin1@email.com';
+        $this->data['password'] = '123';
     }
-
     public function form(Form $form): Form
     {
         return $form
             ->schema([
-                $this->getLoginFormComponent(), // Ganti dengan username
+                $this->getLoginFormComponent(),
                 $this->getPasswordFormComponent(),
                 $this->getRememberFormComponent(),
             ])
             ->statePath('data');
     }
-
     protected function getLoginFormComponent(): Component
     {
-        return TextInput::make('login') // Ini untuk username
-            ->label('Email') // Ganti label menjadi Username
+        return TextInput::make('login')
+            ->label('Email')
             ->required()
             ->autocomplete()
             ->autofocus()
             ->extraInputAttributes(['tabindex' => 1]);
     }
-
     protected function getCredentialsFromFormData(array $data): array
     {
         // Hanya menggunakan username
         return [
-            'email' => $data['login'], // Mengambil username dari input
+            'email' => $data['login'],
             'password' => $data['password'],
         ];
     }
-
-    // public function authenticate(): ?LoginResponse
-    // {
-    //     $this->validate();
-
-    //     // Menggunakan guard 'admin' untuk autentikasi
-    //     if (! Auth::guard('admin')->attempt($this->getCredentialsFromFormData($this->data))) {
-    //         throw ValidationException::withMessages([
-    //             'login' => 'Username atau password salah.',
-    //         ]);
-    //     }
-
-    //     // Jika autentikasi berhasil, lakukan redirect
-    //     return app(DefaultLoginResponse::class)->redirect('/admin');
-    // }
 }
 

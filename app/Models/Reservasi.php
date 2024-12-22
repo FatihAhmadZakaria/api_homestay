@@ -27,34 +27,38 @@ class Reservasi extends Model
 
     protected $attributes = [
         'id_user' => 453120,
-        'status_reservasi' => 'pending'
+        'status_reservasi' => 'pending',
+        'tgl_transaksi' => null,
     ];
 
     protected static function boot()
     {
         parent::boot();
 
-        static::creating(function ($model) {
-            if (!$model->tgl_transaksi) {
-                $model->tgl_transaksi = now();
-            }
+        static::creating(function ($reservasi) {
+            $reservasi->total_harga = $reservasi->calculateTotalHarga();
+        });
 
-            // Hitung total harga jika belum ada
-            if (!$model->total_harga) {
-                $durasi = now()->parse($model->tgl_selesai)->diffInDays(now()->parse($model->tgl_mulai)) + 1;
-                $hargaProduk = 0;
+        static::updating(function ($reservasi) {
+            $reservasi->total_harga = $reservasi->calculateTotalHarga();
+        });
 
-                if ($model->tipe_produk === 'properti') {
-                    $produk = Properti::find($model->id_produk);
-                    $hargaProduk = $produk?->harga ?? 0;
-                } elseif ($model->tipe_produk === 'kendaraan') {
-                    $produk = Kendaraan::find($model->id_produk);
-                    $hargaProduk = $produk?->harga ?? 0;
-                }
-
-                $model->total_harga = $durasi * $hargaProduk * $model->jumlah_pesan;
+        static::creating(function ($reservasi) {
+            if (!$reservasi->tgl_transaksi) {
+                $reservasi->tgl_transaksi = now();
             }
         });
+    }
+
+    public function calculateTotalHarga()
+    {
+        $produk = $this->tipe_produk === Properti::class ? Properti::find($this->id_produk) : Kendaraan::find($this->id_produk);
+        if ($produk) {
+            $durasi = now()->parse($this->tgl_mulai)->diffInDays(now()->parse($this->tgl_selesai)) + 1;
+            $hargaProduk = $produk->harga ?? 0;
+            return $hargaProduk * $this->jumlah_pesan * $durasi;
+        }
+        return 0;
     }
 
     const TIPE_PRODUK = [

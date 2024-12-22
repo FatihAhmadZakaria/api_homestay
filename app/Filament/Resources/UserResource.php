@@ -22,18 +22,19 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id'),
                 Tables\Columns\TextColumn::make('nama_depan'),
                 Tables\Columns\TextColumn::make('nama_belakang'),
                 Tables\Columns\TextColumn::make('email'),
                 Tables\Columns\TextColumn::make('phone'),
             ])
-            ->actions([]) // Tidak ada aksi (action)
-            ->bulkActions([]); // Tidak ada aksi bulk
+            ->actions([])
+            ->bulkActions([]);
     }
 
     public static function form(Form $form): Form
     {
-        return $form->schema([]); // Tidak ada form untuk create atau update
+        return $form->schema([]);
     }
 
     public static function getPages(): array

@@ -25,34 +25,33 @@ class PropertiResource extends Resource
                 Tables\Columns\TextColumn::make('nama_properti'),
                 Tables\Columns\TextColumn::make('kapasitas'),
                 Tables\Columns\TextColumn::make('harga'),
+                Tables\Columns\TextColumn::make('deskripsi'),
             ])
             ->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()])
             ->bulkActions([Tables\Actions\DeleteBulkAction::make()]);
     }
 
     public static function form(Form $form): Form
-{
-    return $form
-        ->schema([
-            Forms\Components\TextInput::make('nama_properti')
-                ->required(),
-            Forms\Components\TextInput::make('kapasitas')
-                ->numeric()
-                ->required(),
-            Forms\Components\Textarea::make('fitur')
-                ->required(),
-            Forms\Components\TextInput::make('harga')
-                ->numeric()
-                ->required(),
-            Forms\Components\Textarea::make('deskripsi')
-                ->required(),
-            Forms\Components\TextInput::make('jumlah')
-                ->numeric()
-                ->required(),
-        ]);
-}
-
-
+    {
+        return $form
+            ->schema([
+                Forms\Components\TextInput::make('nama_properti')
+                    ->required(),
+                Forms\Components\TextInput::make('kapasitas')
+                    ->numeric()
+                    ->required(),
+                Forms\Components\Textarea::make('fitur')
+                    ->required(),
+                Forms\Components\TextInput::make('harga')
+                    ->numeric()
+                    ->required(),
+                Forms\Components\Textarea::make('deskripsi')
+                    ->required(),
+                Forms\Components\TextInput::make('jumlah')
+                    ->numeric()
+                    ->required(),
+            ]);
+    }
     public static function getPages(): array
     {
         return [

@@ -30,7 +30,6 @@ class PromoResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-
     public static function form(Form $form): Form
     {
         return $form
@@ -45,7 +44,6 @@ class PromoResource extends Resource
                     ->maxLength(1000),
             ]);
     }
-
     public static function getPages(): array
     {
         return [

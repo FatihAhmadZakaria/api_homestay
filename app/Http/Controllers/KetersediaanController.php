@@ -74,6 +74,7 @@ class KetersediaanController extends Controller
     // Ambil semua reservasi yang terkait properti dalam rentang waktu
     try {
         $reservasiAktif = Reservasi::where('id_produk', $idProperti)
+            ->where('status_reservasi', 'tercatat')
             ->where(function ($query) use ($tglMulai, $tglSelesai) {
                 $query->where(function ($query) use ($tglMulai, $tglSelesai) {
                     // Case 1: Reservation start or end date is within the range
@@ -169,6 +170,7 @@ public function cekKetersediaanKendaraan(Request $request, $idKendaraan)
     // Ambil semua reservasi yang terkait kendaraan dalam rentang waktu
     try {
         $reservasiAktif = Reservasi::where('id_produk', $idKendaraan)
+            ->where('status_reservasi', 'tercatat')
             ->where(function ($query) use ($tglMulai, $tglSelesai) {
                 $query->where(function ($query) use ($tglMulai, $tglSelesai) {
                     // Case 1: Reservation start or end date is within the range

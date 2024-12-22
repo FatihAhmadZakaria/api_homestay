@@ -14,7 +14,6 @@ class ObjekResource extends Resource
 {
     protected static ?string $model = Objek::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
     public static function table(Table $table): Table
     {
         return $table
@@ -31,7 +30,6 @@ class ObjekResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-
     public static function form(Form $form): Form
     {
         return $form
@@ -51,7 +49,6 @@ class ObjekResource extends Resource
                     ->nullable(),
             ]);
     }
-
     public static function getPages(): array
     {
         return [
