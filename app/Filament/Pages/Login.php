@@ -13,11 +13,6 @@ use Filament\Forms\Form;
 
 class Login extends BaseAuth
 {
-    public function mount(): void
-    {
-        $this->data['login'] = 'admin1@email.com';
-        $this->data['password'] = '123';
-    }
     public function form(Form $form): Form
     {
         return $form
